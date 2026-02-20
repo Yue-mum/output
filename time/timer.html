@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイマー</title>
+    <link rel="stylesheet" href="timer.css">
+</head>
+<body>
+    
+    <div class="timer-container">
+        <h1>タイマー</h1>
+        <!-- 時間設定エリア。分・秒の入力をする -->
+        <div class="set-time">
+            <!-- labelは入力欄の説明を書くためのタグです -->
+            <label>
+                <!--時間の入力欄を作る。入力欄はinput。typeは要素の役割を限定すし、UXを向上させる-->
+                <!--IDはJSから取り出すための目印。-->
+                <!-- valueは初期値（最初に表示される値）。min/maxは入力できる範囲 -->
+                <input type="number" id="hoursInput" value="0" min="0" max="23">
+                時間
+                <!--分の入力欄を作る。-->
+                <input type="number" id="minutesInput" value="0" min="0" max="59">
+                分
+                <!--秒の入力欄を作る。-->
+                <input type="number" id="secondsInput" value="0" min="0" max="59">
+                秒
+            </label>
+        </div>
+        <!--タイマーを表示させる。-->
+        <div class="circle-timer">
+            <!--円形タイマーを作るためにsvgを使う。-->
+            <!--svgは座標を指定して図形を作るタグ。circleタグで円を書き進捗を表す円と背景の円を作る。
+            dasharrayで線・隙間の長さを指定、dashoffsetで線の開始位置を指定する-->
+            <!--viewBoxは表示領域を指定する属性でカメラでどこを風景のどこをズームするのか。横 縦　幅　高さ-->
+            <svg viewBox="0 0 320 320">
+                <!--背景の円（固定）-->
+                <!--cxは円の中心のx座標、cyは円の中心のy座標、rは半径-->
+                <circle class="circle-bg" cx="160" cy="160" r="140"></circle>
+
+                <!--進行を示す円を変化するさせる-->
+                <circle class="circle-progress" cx="160" cy="160" r="140" id="progressCircle"></circle>
+            </svg>
+
+            <!--時間を表示させる。idで時間の更新をする-->
+            <div class="time-text" id="timeText">0:00:00</div>
+        </div>
+        <!--終了になった時のメッセージ表示-->
+        <div class="finished-message" id="finishedMessage">
+            <span>時</span><span>間</span><span>に</span><span>な</span><span>り</span><span>ま</span><span>し</span><span>た</span></div>
+        <!--スタート・ストップ・リセットのボタンを作る-->
+        <!--onclick属性でボタンがクリックされたときに実行するJSの関数を指定-->
+        <div>
+            <button class="start-btn" onclick="startTimer()">スタート</button>
+            <button class="stop-btn" id="stop-btn" onclick="stopTimer()">ストップ</button>
+            <button class="clear-btn" id="clear-btn" onclick="clearTimer()">クリア</button>
+            <button class="reset-btn" onclick="resetTimer()">リセット</button>
+        </div>
+    </div>
+    <script src="timer.js"></script>
+</body>
+</html> 

@@ -1,0 +1,157 @@
+/*bodyにページ全体のスタイルを適用
+フォント、画面設定、背景色など*/
+body {
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
+    /* displayを使って画面揃えをする。flexはbody要素のレイアウトを制御するためのプロパティ */
+    display: flex;
+    /* displayのflex設定で自由に要素を動かせるようになったので、縦justify横alignで中央揃えにする */
+    justify-content: center;
+    align-items: center;
+    /* 画面全体の高さを確保するための設定をする。minは最小値で、vhはビューポートの高さの単位。100vhは100%の高さを意味する */
+    min-height: 100vh;
+    background-color: rgb(225, 241, 224);
+    /*backgroundは強力なので、imageにしてベースの上にグラデーションを重ねるためtransparentを使う*/
+    background-image: linear-gradient(45deg, rgb(239, 212, 184), rgb(242, 247, 180), transparent);
+    /*marginを0にして、ブラウザのデフォルトの余白を消す*/
+    margin: 0;
+}
+
+.timer-container {
+    background: #EBDCC8;
+    padding: 50px 65px;
+    border-radius: 40px;
+    box-shadow: 10px 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+h1 {
+    margin: 0 0 40px 0;;
+    color: rgb(59, 54, 54);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
+}
+
+/*positionについて： relativeは親要素に対しての位置を指定するための設定
+absoluteは親要素の位置を基準にして配置するための設定*/
+/*transformについて： rotateは要素を回転させるための設定、
+margin: 0 auto 30pxは上を0にし、左右を自動中央揃え、下を30pxにする設定*/
+.circle-timer {
+    position: relative;
+    width: 320px;
+    height: 300px;
+    margin: 0 auto 30px;
+}
+/*-90degは元々が3時の位置を0度としているため、12時の位置に合わせるために-90度回転させる設定*/
+.circle-timer svg {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   transform: rotate(-90deg);
+
+}
+
+/*時間短縮を表す円。strokeは線の色を指定するプロパティ*/
+.circle-bg {
+    fill: none;
+    stroke: rgb(202, 198, 198);
+    stroke-width: 12;
+}
+
+.circle-progress {
+    fill: none;
+    stroke:rgb(110, 110, 180);
+    stroke-width: 12;
+    /*stroke-dasharrayは円の周の長さを指定するプロパティで2*π*rでもとめる*/
+    stroke-dasharray: 880; 
+    /*stroke-dashoffsetは円の進行度を指定するプロパティで、初期値は0に設定*/
+    stroke-dashoffset: 0;
+    /*transitionはアニメーション効果を指定するプロパティで、1秒かけて線の進行度を変化させる*/
+    transition: stroke-dashoffset 1s linear; 
+}
+/*taranslateは現在位置からの移動を指定するプロパティで、-50%ずつ移動させることで中央に配置*/
+.time-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: rgb(107, 107, 99);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.set-time {
+    margin: 0 20px;
+}
+
+input[type="number"] {
+    padding: 5px 0;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid rgb(150, 150, 150);
+    border-radius: 11px;
+    margin: 0 5px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 7px;
+    border: none;
+    border-radius: 8px;
+    /*cursorはマウスカーソルの形状を指定するプロパティで、pointerはクリック可能な状態を示す*/
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+/*ボタンを押したときに少し縮むアニメーション効果。
+scale(1)を初期値として1以下が縮んで、1以上は拡大*/
+button:active {
+    transform: scale(0.95);
+}
+
+.start-btn {
+    background: linear-gradient(45deg, rgb(185, 198, 237), rgb(153, 126, 250));
+    color:rgb(107, 106, 106);
+}
+.stop-btn {
+    background: linear-gradient(45deg,rgb(247, 199, 225), rgb(224, 55, 123));
+    color: rgb(107, 106, 106);
+}
+.reset-btn {
+    background: linear-gradient(45deg, rgb(218, 246, 213), lightgreen);
+    color: rgb(107, 106, 106);
+}
+.clear-btn {
+    background: linear-gradient(45deg, rgb(249, 221, 108), rgb(255, 255, 150));
+    color: rgb(107, 106, 106);
+}
+
+@keyframes wave-animation {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px);}
+}
+.finished-message {
+    font-size: 24px;
+    color: rgb(45, 46, 45);
+    font-weight: bold;
+    display: none;
+}
+.finished-message.is-active {
+    display: flex;
+    justify-content: center;
+}
+.finished-message span {
+  display: inline-block;
+  animation: wave-animation 1s ease-in-out infinite;
+}
+
+/* 各文字に時間差（ディレイ）をつける */
+.finished-message span:nth-child(1) { animation-delay: 0.0s; }
+.finished-message span:nth-child(2) { animation-delay: 0.1s; }
+.finished-message span:nth-child(3) { animation-delay: 0.2s; }
+.finished-message span:nth-child(4) { animation-delay: 0.3s; }
+.finished-message span:nth-child(5) { animation-delay: 0.4s; }
+.finished-message span:nth-child(6) { animation-delay: 0.5s; }
+.finished-message span:nth-child(7) { animation-delay: 0.6s; }
+.finished-message span:nth-child(8) { animation-delay: 0.7s; }

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="nav-overlay" onclick="closeNav()"></div>
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">Forcas</div>
+            <div class="sidebar-sub-title">一つのことに集中する</div>
+        </div>
+        <div class="sidebar-nav">
+            <div class="nav-item active" onclick="showPage('home')">
+                <!-- Home Icon -->
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                ホーム
+            </div>
+            <div class="nav-item" onclick="showPage('group')">
+                <!-- Group Icon -->
+                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                グループ
+            </div>
+            <div class="nav-item" onclick="showPage('review')">
+                <!-- Review Icon -->
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20q1.5-0.5 3 0t3 0t3 0"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                復習
+            </div>
+            <div class="nav-item" onclick="showPage('settings')">
+                <!-- Settings Icon -->
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                問い合わせ
+
+            </div>
+
+        </div>
+    </nav>
+
+    <!--ヘッダー-->
+    <header>
+        <button id="hamburger" onclick="toggleNav()" title="メニュー" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+        <h2 class="site-title">Forcas</h2>
+        <div class="header-right" id="header-date"></div>
+    </header>
+
+    <!--メインコンテンツ-->
+    <div id="home-page" class="page active">
+        <div id="home-layout">
+            <div id="list-panel">
+                <div class="panel-title">
+                    <span>ToDoリスト</span>
+                    <span id="progress-text" style="font-size:11px;"></span>
+                </div>
+                <div class="list-area" id="todo-list"></div>
+                <div id="complete-msg">お疲れさまでした</div>
+                <div class="add-area">
+                    <input class="add-input" id="add-input" placeholder="新しいタスクを追加" onkeydown="if(event.key==='Enter')addTodo()">
+                    <button class="add-btn" onclick="addTodo()">+</button>
+                </div>
+            </div>
+            
+            <!--タイマー表示-->
+            <div id="timer-panel">
+                <div class="timer-top">
+                    <div class="target-task" id="target-task-label">
+                        タスクを選択してください
+                    </div>
+                    <div class="timer-controls-top">
+                        <button class="btn-mode active study-btn" onclick="setMode('study')">勉強</button>
+                        <button class="btn-mode  break-btn" onclick="setMode('break')">休憩</button>
+
+                    </div>
+                </div>
+                <!--拡大・縮小-->
+                <div class="scale-controls">
+                    <button class="scale-btn" onclick="chageScale(0.2)" title="拡大">+</button>
+                    <button class="scale-btn" onclick="chageScale(-0.2)" title="縮小">-</button>
+                </div>
+
+                <!--リスト開閉-->
+                <div class="timer-setting">
+                    <div class="time-input-group">
+                        <input class="time-input" id="set-h" type="number" min="0" max="23" value="0" placeholder="0">
+                        <span class="time-label">時間</span>
+                        <input class="time-input" id="set-m" type="number" min="0" max="60" value="25" placeholder="0">
+                        <span class="time-label">分</span>
+                    </div>
+                    <button class="set-btn" onclick="applyTime()">セット</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--グループページ-->
+    <div id="group-page" class="page" style="padding:28px 24px;">
+        <h2 class="page-heading">グループ</h2>
+        <p class="page-sub">よく使うToDoリストを管理をできます</p>
+        <div class="group-grid" id="group-grid"></div>
+        <div class="new-group-area">
+            <h3>新しいグループを作成</h3>
+            <div class="newo-group-row">
+                <input class="new-group-input" id="new-group-name" placeholder="グループ名">
+                <button class="btn-primary" onclick="createGroup()">作成</button>
+            </div>                
+        </div>
+    </div>
+
+
+    <!--グループのリストに追加する -->
+<div class="modal-overlay" id="group-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-group-title"></div>
+    <div class="modal-todo-list" id="modal-todo-list"></div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal()">閉じる</button>
+      <button class="btn-primary" onclick="loadGroupToHome()">リストに追加</button>
+    </div>
+  </div>
+</div>
+
+
+<!--復習ページ-->
+<div id="contact-page" class="page" style="padding: 28px 24px; max-width:600px;">
+    <h2 class="review-page">復習ページ</h2>
+    <div class="coming-soon">
+        <div class="icon">🤖</div>
+        <p>この機能は現在開発中です。お楽しみに！</p>
+    </div>
+</div>
+
+
+<!--お問い合わせ-->
+<div id="contact-page" class="page" style="padding:28px 24px; max-width:600px;">
+    <h2 class="page-heading">お問い合わせ</h2>
+    <p class="page-sub" style="margin-bottom:24px;">ご意見・ご要望などがありましたら、こちらからお問い合わせください。</p>
+    <div class="form-group">
+        <label class="form-label">お名前</label>
+        <input class="form-input" type="text" placeholder="山田 太郎">
+    </div>
+    <div class="form-group">
+        <label class="form-label">メールアドレス</label>
+        <input class="form-input" type="email" placeholder="example@mail.com">
+    </div>
+    <div class="form-group">
+        <label class="form-label">メッセージ</label>
+        <textarea class="form-textarea" placeholder="お問い合わせ内容をご記入してください"></textarea>
+    </div>
+    <button class="btn-primary" style="width:100%">送信する</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
